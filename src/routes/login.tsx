@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, Loader2, LockKeyhole, Mail } from "lucide-react";
-import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,16 +22,11 @@ export const Route = createFileRoute("/login")({
   component: LoginPage,
 });
 
-type Mode = "signin" | "signup" | "forgot";
-
 function LoginPage() {
   const navigate = useNavigate();
   const { session, refresh } = useAuth();
-  const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [show, setShow] = useState(false);
   const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -52,36 +46,6 @@ function LoginPage() {
     setError(null);
     setLoading(true);
     try {
-      if (mode === "forgot") {
-        const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/reset-password`,
-        });
-        if (err) throw err;
-        toast.success("Reset link sent. Check your inbox.");
-        setMode("signin");
-        return;
-      }
-
-      if (mode === "signup") {
-        const { data, error: err } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: window.location.origin,
-            data: { first_name: firstName, last_name: lastName },
-          },
-        });
-        if (err) throw err;
-        if (!data.session) {
-          toast.success("Account created. Confirm your email to activate access.");
-          setMode("signin");
-          return;
-        }
-        await refresh();
-        navigate({ to: "/dashboard", replace: true });
-        return;
-      }
-
       const { error: err } = await supabase.auth.signInWithPassword({ email, password });
       if (err) throw err;
       if (remember) window.localStorage.setItem("dodri.email", email);
@@ -97,7 +61,8 @@ function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl"
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl"
         style={{ background: "var(--gradient-core)" }}
       />
 
@@ -110,19 +75,6 @@ function LoginPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="mt-7 space-y-4">
-          {mode === "signup" && (
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="first">First name</Label>
-                <Input id="first" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="last">Last name</Label>
-                <Input id="last" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-              </div>
-            </div>
-          )}
-
           <div className="space-y-1.5">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
@@ -140,53 +92,40 @@ function LoginPage() {
             </div>
           </div>
 
-          {mode !== "forgot" && (
-            <div className="space-y-1.5">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <LockKeyhole className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type={show ? "text" : "password"}
-                  required
-                  minLength={6}
-                  autoComplete={mode === "signup" ? "new-password" : "current-password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="px-9"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShow((s) => !s)}
-                  aria-label={show ? "Hide password" : "Show password"}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {mode === "signin" && (
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-muted-foreground">
-                <Checkbox
-                  checked={remember}
-                  onCheckedChange={(v) => setRemember(Boolean(v))}
-                  aria-label="Remember me"
-                />
-                Remember me
-              </label>
+          <div className="space-y-1.5">
+            <Label htmlFor="password">Password</Label>
+            <div className="relative">
+              <LockKeyhole className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                id="password"
+                type={show ? "text" : "password"}
+                required
+                minLength={6}
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="px-9"
+                placeholder="••••••••"
+              />
               <button
                 type="button"
-                onClick={() => setMode("forgot")}
-                className="font-medium text-primary hover:underline"
+                onClick={() => setShow((s) => !s)}
+                aria-label={show ? "Hide password" : "Show password"}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
-                Forgot password?
+                {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
-          )}
+          </div>
+
+          <label className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Checkbox
+              checked={remember}
+              onCheckedChange={(v) => setRemember(Boolean(v))}
+              aria-label="Remember me"
+            />
+            Remember me
+          </label>
 
           {error && (
             <div className="rounded-lg border border-destructive/25 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -196,24 +135,9 @@ function LoginPage() {
 
           <Button type="submit" disabled={loading} className="h-11 w-full text-sm font-semibold">
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {mode === "signin" ? "Sign in" : mode === "signup" ? "Create account" : "Send reset link"}
+            Sign in
           </Button>
         </form>
-
-        <div className="mt-5 text-center text-sm text-muted-foreground">
-          {mode === "signin" ? (
-            <>
-              No account yet?{" "}
-              <button onClick={() => setMode("signup")} className="font-medium text-primary hover:underline">
-                Create one
-              </button>
-            </>
-          ) : (
-            <button onClick={() => setMode("signin")} className="font-medium text-primary hover:underline">
-              Back to sign in
-            </button>
-          )}
-        </div>
 
         <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-success" />
