@@ -40,13 +40,13 @@ export function AppSidebar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
-      <SidebarHeader className="px-3 py-4">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar/90 shadow-[var(--shadow-soft)]">
+      <SidebarHeader className="border-b border-sidebar-border px-3 py-2.5">
         {collapsed ? <DodriMark className="mx-auto h-8 w-8" /> : <DodriLogo />}
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
+        <SidebarGroup className="py-2">
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -61,7 +61,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup>
+        <SidebarGroup className="py-1">
           <SidebarGroupLabel>Administration</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -109,7 +109,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup>
+        <SidebarGroup className="py-1">
           <SidebarGroupLabel>Modules</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -145,7 +145,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup>
+        <SidebarGroup className="py-1">
           <SidebarGroupLabel>Parameters</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -210,9 +210,9 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="px-3 pb-4">
+      <SidebarFooter className="px-3 pb-3">
         {!collapsed && (
-          <div className="panel px-3 py-3 text-center">
+          <div className="rounded-md border border-primary/15 bg-primary/5 px-3 py-2.5 text-center">
             <Settings2 className="mx-auto mb-1 h-4 w-4 text-primary" />
             <div className="font-display text-sm font-semibold text-gradient">DODRI CORE</div>
             <div className="label-tech mt-1">v1.0.0</div>

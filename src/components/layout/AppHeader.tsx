@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Bell, LogOut, Search, Settings, ShieldCheck, User as UserIcon, UserCog } from "lucide-react";
+import { Bell, LogOut, Search, Settings, ShieldCheck, Sparkles, Sun, User as UserIcon, UserCog } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
@@ -51,37 +51,33 @@ export function AppHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border/70 bg-background/80 px-3 backdrop-blur-xl md:px-6">
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border/80 bg-card/75 px-2.5 shadow-[var(--shadow-soft)] backdrop-blur-xl md:px-4">
       <SidebarTrigger />
-      <div className="min-w-0">
-        <div className="truncate font-display text-sm font-semibold">{title}</div>
-        <div className="label-tech hidden sm:block">Connect • Manage • Grow</div>
+      <div className="hidden min-w-0 xl:block">
+        <div className="truncate font-display text-xs font-semibold text-primary">{title}</div>
+        <div className="label-tech hidden text-[8px] sm:block">Connect • Manage • Grow</div>
       </div>
 
-      <div className="mx-auto hidden lg:block">
-        <span className="font-display text-sm font-bold tracking-[0.2em] text-gradient">
-          DODRI PLATFORM CORE
+      <div className="mx-auto hidden items-center gap-2 lg:flex">
+        <Sparkles className="h-3.5 w-3.5 text-cyan" />
+        <span className="font-display text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+          The Intelligence Layer for Your Business
         </span>
       </div>
 
       <div className="ml-auto flex items-center gap-2">
         <div className="relative hidden md:block">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search modules, users, settings..."
-            className="h-9 w-56 rounded-full border-border/70 bg-card/80 pl-9 lg:w-72"
-          />
+          <Input placeholder="Search modules, users, settings..." className="h-8 w-56 rounded-md border-primary/15 bg-background/70 pl-9 text-xs lg:w-64" />
         </div>
 
-        <div className="hidden items-center gap-2 rounded-full border border-success/30 bg-success/10 px-3 py-1.5 text-xs font-medium text-success sm:flex">
-          <span className="h-2 w-2 rounded-full bg-success" />
-          CORE ONLINE
-        </div>
+        <Button variant="ghost" size="icon" aria-label="Appearance" className="hidden h-8 w-8 sm:inline-flex"><Sun /></Button>
 
-        <Button variant="ghost" size="icon" aria-label="Notifications">
+        <Button variant="ghost" size="icon" aria-label="Notifications" className="relative h-8 w-8">
           <Bell className="h-4 w-4" />
+          <span className="absolute right-1 top-0.5 h-2 w-2 rounded-full border border-card bg-destructive" />
         </Button>
-        <Button variant="ghost" size="icon" asChild aria-label="Settings">
+        <Button variant="ghost" size="icon" asChild aria-label="Settings" className="hidden h-8 w-8 sm:inline-flex">
           <Link to="/parameters">
             <Settings className="h-4 w-4" />
           </Link>
@@ -89,8 +85,8 @@ export function AppHeader() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 rounded-full border border-border/70 bg-card/80 py-1 pl-1 pr-3 text-left transition-colors hover:bg-accent">
-              <Avatar className="h-8 w-8">
+            <button className="flex items-center gap-2 rounded-md border border-border/70 bg-card/80 py-0.5 pl-0.5 pr-2 text-left transition-colors hover:bg-accent">
+              <Avatar className="h-8 w-8 rounded-md">
                 <AvatarFallback className="bg-primary text-xs text-primary-foreground">
                   {initials || "DC"}
                 </AvatarFallback>
