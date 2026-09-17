@@ -4,7 +4,12 @@ import { EnergyCore } from "@/components/core/EnergyCore";
 import { CoreStatusPanel, type ServiceStatus } from "@/components/core/CoreStatusPanel";
 import { MetricCards, type Metric } from "@/components/core/MetricCards";
 import { RecentActivity, type ActivityRow } from "@/components/core/RecentActivity";
-import { PageHeader } from "@/components/common/PageHeader";
+import {
+  CoreTelemetry,
+  QuickActions,
+  RegistryPanel,
+  SystemResources,
+} from "@/components/core/DashboardOperations";
 import { useActivityLogs, useConnections, useModules, useUsers } from "@/hooks/useCore";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -14,6 +19,8 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       { name: "description", content: "Live view of the DODRI Core: modules, connections and system health." },
       { property: "og:title", content: "Dashboard — DODRI Platform Core" },
       { property: "og:description", content: "Live view of the DODRI Core." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: DashboardPage,
@@ -63,21 +70,28 @@ function DashboardPage() {
   ];
 
   return (
-    <div>
-      <PageHeader
-        eyebrow="Core"
-        title="Command Center"
-        description="The DODRI Core orchestrates authentication, users, modules and connections."
-      />
-
+    <div className="mx-auto max-w-[1700px] space-y-2.5">
       <MetricCards metrics={metrics} />
 
-      <div className="mt-4 grid gap-4 xl:grid-cols-[1fr_320px]">
+      <div className="grid gap-2.5 xl:grid-cols-[210px_minmax(440px,1fr)_250px]">
+        <RegistryPanel modules={moduleRows} />
         <EnergyCore modules={moduleRows} connections={connectionRows} />
-        <div className="space-y-4">
-          <CoreStatusPanel services={services} />
-          <RecentActivity rows={(logs.data ?? []) as ActivityRow[]} dense />
-        </div>
+        <CoreTelemetry
+          modules={moduleRows}
+          connections={connectionRows}
+          activeUsers={userRows.filter((user) => user.status === "active").length}
+        />
+      </div>
+
+      <div className="grid gap-2.5 xl:grid-cols-[1.1fr_0.9fr_1.1fr]">
+        <RecentActivity rows={(logs.data ?? []) as ActivityRow[]} dense />
+        <SystemResources modules={moduleRows} connections={connectionRows} />
+        <QuickActions />
+      </div>
+
+      <div className="grid gap-2.5 lg:grid-cols-[1fr_2fr]">
+        <CoreStatusPanel services={services} />
+        <div className="hidden lg:block" />
       </div>
     </div>
   );

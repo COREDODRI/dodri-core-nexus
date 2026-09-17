@@ -23,10 +23,13 @@ export function EnergyCore({ modules, connections = [] }: Props) {
     );
 
   return (
-    <div className="panel relative overflow-hidden p-4">
-      <div className="absolute left-4 top-4 label-tech">Core Visualization</div>
+    <section className="core-stage panel relative flex min-h-[430px] flex-col overflow-hidden p-3">
+      <div className="absolute left-3 top-3 z-10 section-title">Core Intelligence</div>
+      <div className="absolute right-3 top-3 z-10 flex items-center gap-1.5 text-[9px] font-semibold text-success">
+        <span className="status-dot bg-success" /> LIVE
+      </div>
 
-      <div className="relative mx-auto aspect-square w-full max-w-[520px]">
+      <div className="relative mx-auto aspect-square w-full max-w-[520px] flex-1">
         <svg viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 h-full w-full">
           <defs>
             <radialGradient id="core-glow" cx="50%" cy="50%">
@@ -43,7 +46,7 @@ export function EnergyCore({ modules, connections = [] }: Props) {
               cy={center}
               r={r}
               fill="none"
-              stroke="oklch(0.66 0.14 245)"
+              stroke="var(--primary)"
               strokeOpacity={0.18 + i * 0.04}
               strokeDasharray={i === 1 ? "4 8" : undefined}
             />
@@ -57,10 +60,10 @@ export function EnergyCore({ modules, connections = [] }: Props) {
             const status = connection?.status ?? (module.status === "active" ? "active" : "inactive");
             const stroke =
               status === "active"
-                ? "oklch(0.66 0.14 245)"
+                ? "var(--primary)"
                 : status === "error"
-                  ? "oklch(0.6 0.22 22)"
-                  : "oklch(0.75 0.02 250)";
+                  ? "var(--destructive)"
+                  : "var(--border)";
             return (
               <g key={module.id}>
                 <line
@@ -78,7 +81,7 @@ export function EnergyCore({ modules, connections = [] }: Props) {
                     y1={center}
                     x2={x}
                     y2={y}
-                    stroke="oklch(0.73 0.135 213)"
+                    stroke="var(--cyan)"
                     strokeWidth={2.5}
                     strokeDasharray="6 34"
                     className="animate-flow"
@@ -90,20 +93,22 @@ export function EnergyCore({ modules, connections = [] }: Props) {
         </svg>
 
         {/* Core sphere */}
-        <div className="absolute left-1/2 top-1/2 flex h-[38%] w-[38%] -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+        <div className="absolute left-1/2 top-1/2 flex h-[42%] w-[42%] -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+          <div className="core-ring absolute inset-[-14%] rounded-full border border-primary/30" />
+          <div className="core-ring-reverse absolute inset-[-28%] rounded-full border border-dashed border-cyan/25" />
           <div
-            className="animate-core-pulse flex h-full w-full items-center justify-center rounded-full text-center"
+            className="core-sphere animate-core-pulse flex h-full w-full items-center justify-center rounded-full text-center"
             style={{
               background: "var(--gradient-core)",
               boxShadow: "var(--shadow-glow)",
             }}
           >
             <div className="px-2">
-              <div className="font-display text-sm font-bold tracking-[0.18em] text-white">DODRI</div>
-              <div className="text-[9px] font-medium tracking-[0.22em] text-white/80">
+              <div className="font-display text-lg font-bold uppercase tracking-[0.18em] text-primary-foreground">DODRI</div>
+              <div className="text-[9px] font-medium uppercase tracking-[0.22em] text-primary-foreground/80">
                 PLATFORM CORE
               </div>
-              <div className="mt-1 text-[9px] text-white/70">v1.0.0</div>
+              <div className="mt-1 text-[9px] text-primary-foreground/70">v1.0.0</div>
             </div>
           </div>
         </div>
@@ -122,12 +127,12 @@ export function EnergyCore({ modules, connections = [] }: Props) {
               className="absolute -translate-x-1/2 -translate-y-1/2"
               style={{ left: `${x}%`, top: `${y}%` }}
             >
-              <div className="glass flex w-[104px] flex-col items-center gap-1 rounded-2xl px-2 py-2 shadow-[var(--shadow-soft)]">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--gradient-brand)] text-white">
+              <div className="module-node flex w-[78px] flex-col items-center gap-1 px-1.5 py-1.5">
+                <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[var(--gradient-brand)] text-primary-foreground shadow-[var(--shadow-glow)]">
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="truncate text-xs font-semibold">{module.name}</div>
-                <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                <div className="flex items-center gap-1 text-[8px] text-muted-foreground">
                   <span
                     className={cn(
                       "h-1.5 w-1.5 rounded-full",
@@ -148,9 +153,9 @@ export function EnergyCore({ modules, connections = [] }: Props) {
         )}
       </div>
 
-      <div className="mx-auto mt-2 w-fit rounded-full border border-primary/25 bg-primary/10 px-5 py-1.5 text-xs font-semibold tracking-[0.2em] text-primary">
-        ● CORE SYSTEM ONLINE
+      <div className="core-online mx-auto -mt-4 w-fit px-7 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+        <span className="text-success">●</span> Core System Online
       </div>
-    </div>
+    </section>
   );
 }

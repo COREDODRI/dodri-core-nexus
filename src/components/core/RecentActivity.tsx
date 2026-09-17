@@ -23,20 +23,20 @@ function iconFor(action: string) {
 
 export function RecentActivity({ rows, dense = false }: { rows: ActivityRow[]; dense?: boolean }) {
   return (
-    <section className="panel p-4">
-      <div className="label-tech mb-3">Recent Activity</div>
+    <section className="panel p-3">
+      <div className="section-title mb-2.5">Recent Activity</div>
       {rows.length === 0 && <p className="text-sm text-muted-foreground">No activity recorded yet.</p>}
       <ul className="divide-y divide-border/60">
         {rows.slice(0, dense ? 6 : rows.length).map((row) => {
           const Icon = iconFor(row.action);
           return (
-            <li key={row.id} className="flex items-center gap-3 py-2.5">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
-                <Icon className="h-4 w-4" />
+            <li key={row.id} className="flex items-center gap-2 py-1.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-accent text-primary">
+                <Icon className="h-3.5 w-3.5" />
               </span>
               <div className="min-w-0 flex-1">
-                <div className="truncate text-sm font-medium">{row.description ?? row.action}</div>
-                <div className="text-xs text-muted-foreground">
+                <div className="truncate text-[11px] font-medium">{row.description ?? row.action}</div>
+                <div className="text-[9px] text-muted-foreground">
                   {row.actor_label ?? "System"} • {new Date(row.created_at).toLocaleString()}
                 </div>
               </div>

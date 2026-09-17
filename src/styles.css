@@ -107,7 +107,7 @@
 }
 
 :root {
-  --radius: 0.9rem;
+  --radius: 0.45rem;
 
   --background: oklch(0.977 0.008 240);
   --foreground: oklch(0.24 0.045 260);
@@ -169,12 +169,11 @@
     oklch(1 0 0 / 0.92),
     oklch(0.97 0.02 235 / 0.78)
   );
-  --gradient-app: radial-gradient(
-      1200px 600px at 12% -10%,
-      oklch(0.9 0.06 230 / 0.55),
-      transparent 60%
-    ),
-    radial-gradient(900px 500px at 95% 0%, oklch(0.9 0.05 290 / 0.4), transparent 60%);
+  --gradient-app: linear-gradient(oklch(0.72 0.08 235 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.72 0.08 235 / 0.045) 1px, transparent 1px),
+    radial-gradient(1200px 600px at 45% -10%, oklch(0.9 0.06 230 / 0.65), transparent 60%),
+    radial-gradient(900px 500px at 95% 0%, oklch(0.9 0.05 290 / 0.35), transparent 60%);
+  --success-shadow: oklch(0.68 0.16 155 / 0.65);
 
   --shadow-soft: 0 1px 2px oklch(0.4 0.08 260 / 0.04), 0 8px 24px oklch(0.4 0.08 260 / 0.06);
   --shadow-panel: 0 1px 0 oklch(1 0 0 / 0.8) inset, 0 18px 48px oklch(0.42 0.1 258 / 0.1);
@@ -217,6 +216,7 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    background-size: 28px 28px, 28px 28px, auto, auto;
   }
 
   h1,
@@ -255,4 +255,120 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-muted-foreground);
+}
+
+@utility section-title {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-foreground);
+}
+
+@utility status-counter {
+  display: inline-flex;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent);
+  color: var(--color-primary);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+@utility registry-row {
+  display: flex;
+  min-height: 1.8rem;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-sm);
+  padding-inline: 0.45rem;
+
+  &:hover {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
+  }
+
+  & svg {
+    width: 0.85rem;
+    height: 0.85rem;
+    flex: none;
+  }
+}
+
+@utility status-dot {
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  flex: none;
+  border-radius: 9999px;
+}
+
+@utility module-node {
+  border: 1px solid color-mix(in oklab, var(--primary) 22%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--card) 86%, transparent);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+
+@utility core-stage {
+  background-image: radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--cyan) 13%, transparent), transparent 48%),
+    linear-gradient(color-mix(in oklab, var(--primary) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--primary) 5%, transparent) 1px, transparent 1px),
+    var(--gradient-panel);
+  background-size: auto, 24px 24px, 24px 24px, auto;
+}
+
+@utility core-sphere {
+  position: relative;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 8%;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in oklab, var(--primary-foreground) 48%, transparent);
+  }
+
+  &::after {
+    inset: 18% 4%;
+    transform: rotate(62deg);
+  }
+}
+
+@utility core-ring {
+  animation: orbit-spin 18s linear infinite;
+}
+
+@utility core-ring-reverse {
+  animation: orbit-spin 25s linear infinite reverse;
+}
+
+@utility core-online {
+  border: 1px solid color-mix(in oklab, var(--cyan) 55%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--card) 84%, transparent);
+  box-shadow: 0 0 18px color-mix(in oklab, var(--cyan) 22%, transparent);
+}
+
+@utility telemetry-grid {
+  background-image: linear-gradient(color-mix(in oklab, var(--primary) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--primary) 6%, transparent) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-core-pulse,
+  .animate-flow,
+  .animate-rise,
+  .core-ring,
+  .core-ring-reverse {
+    animation: none !important;
+  }
 }

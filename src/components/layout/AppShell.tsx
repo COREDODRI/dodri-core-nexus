@@ -6,17 +6,15 @@ import { AppHeader } from "./AppHeader";
 export function AppShell({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen w-full bg-background/60">
         <AppSidebar />
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-h-screen min-w-0 flex-1 flex-col">
           <AppHeader />
-          <main className="min-w-0 flex-1 px-4 pb-10 pt-5 md:px-6">{children}</main>
-          <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border/70 px-6 py-3 text-xs text-muted-foreground">
-            <span className="font-display font-semibold tracking-tight text-foreground">
-              DODRI CORE
-            </span>
-            <span className="italic">Build your ecosystem, module by module.</span>
-            <span className="label-tech">All systems operational</span>
+          <main className="min-w-0 flex-1 p-2.5 md:p-3">{children}</main>
+          <footer className="mx-3 flex min-h-9 flex-wrap items-center justify-between gap-2 border-t border-border/70 px-2 py-2 text-[10px] text-muted-foreground">
+            <span className="font-display font-bold text-primary">DODRI CORE</span>
+            <span>Build your ecosystem, module by module.</span>
+            <span className="flex items-center gap-1.5 text-success"><span className="status-dot bg-success" /> All Systems Operational</span>
           </footer>
         </div>
       </div>
