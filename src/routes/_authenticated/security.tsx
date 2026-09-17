@@ -31,9 +31,8 @@ function SecurityPage() {
     setSaving(true);
     const { error } = await supabase.auth.updateUser({
       password: next,
-      // @ts-expect-error current_password is supported by Lovable Cloud auth
       current_password: current,
-    });
+    } as Parameters<typeof supabase.auth.updateUser>[0]);
     setSaving(false);
     if (error) {
       toast.error(error.message);
