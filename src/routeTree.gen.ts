@@ -16,6 +16,10 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedSecurityRouteImport } from './routes/_authenticated/security'
+import { Route as AuthenticatedAdministrationActivityLogsRouteImport } from './routes/_authenticated/administration/activity-logs'
+import { Route as AuthenticatedAdministrationPermissionsRouteImport } from './routes/_authenticated/administration/permissions'
+import { Route as AuthenticatedAdministrationRolesRouteImport } from './routes/_authenticated/administration/roles'
+import { Route as AuthenticatedAdministrationUsersRouteImport } from './routes/_authenticated/administration/users'
 import { Route as AuthenticatedModulesSlugRouteImport } from './routes/_authenticated/modules/$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -52,6 +56,30 @@ const AuthenticatedSecurityRoute = AuthenticatedSecurityRouteImport.update({
   path: '/security',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdministrationActivityLogsRoute =
+  AuthenticatedAdministrationActivityLogsRouteImport.update({
+    id: '/administration/activity-logs',
+    path: '/administration/activity-logs',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdministrationPermissionsRoute =
+  AuthenticatedAdministrationPermissionsRouteImport.update({
+    id: '/administration/permissions',
+    path: '/administration/permissions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdministrationRolesRoute =
+  AuthenticatedAdministrationRolesRouteImport.update({
+    id: '/administration/roles',
+    path: '/administration/roles',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdministrationUsersRoute =
+  AuthenticatedAdministrationUsersRouteImport.update({
+    id: '/administration/users',
+    path: '/administration/users',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedModulesSlugRoute =
   AuthenticatedModulesSlugRouteImport.update({
     id: '/modules/$slug',
@@ -66,6 +94,10 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/security': typeof AuthenticatedSecurityRoute
+  '/administration/activity-logs': typeof AuthenticatedAdministrationActivityLogsRoute
+  '/administration/permissions': typeof AuthenticatedAdministrationPermissionsRoute
+  '/administration/roles': typeof AuthenticatedAdministrationRolesRoute
+  '/administration/users': typeof AuthenticatedAdministrationUsersRoute
   '/modules/$slug': typeof AuthenticatedModulesSlugRoute
 }
 export interface FileRoutesByTo {
@@ -75,6 +107,10 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/security': typeof AuthenticatedSecurityRoute
+  '/administration/activity-logs': typeof AuthenticatedAdministrationActivityLogsRoute
+  '/administration/permissions': typeof AuthenticatedAdministrationPermissionsRoute
+  '/administration/roles': typeof AuthenticatedAdministrationRolesRoute
+  '/administration/users': typeof AuthenticatedAdministrationUsersRoute
   '/modules/$slug': typeof AuthenticatedModulesSlugRoute
 }
 export interface FileRoutesById {
@@ -86,6 +122,10 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/security': typeof AuthenticatedSecurityRoute
+  '/_authenticated/administration/activity-logs': typeof AuthenticatedAdministrationActivityLogsRoute
+  '/_authenticated/administration/permissions': typeof AuthenticatedAdministrationPermissionsRoute
+  '/_authenticated/administration/roles': typeof AuthenticatedAdministrationRolesRoute
+  '/_authenticated/administration/users': typeof AuthenticatedAdministrationUsersRoute
   '/_authenticated/modules/$slug': typeof AuthenticatedModulesSlugRoute
 }
 export interface FileRouteTypes {
@@ -97,6 +137,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/security'
+    | '/administration/activity-logs'
+    | '/administration/permissions'
+    | '/administration/roles'
+    | '/administration/users'
     | '/modules/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -106,6 +150,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/security'
+    | '/administration/activity-logs'
+    | '/administration/permissions'
+    | '/administration/roles'
+    | '/administration/users'
     | '/modules/$slug'
   id:
     | '__root__'
@@ -116,6 +164,10 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/profile'
     | '/_authenticated/security'
+    | '/_authenticated/administration/activity-logs'
+    | '/_authenticated/administration/permissions'
+    | '/_authenticated/administration/roles'
+    | '/_authenticated/administration/users'
     | '/_authenticated/modules/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -177,6 +229,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSecurityRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/administration/activity-logs': {
+      id: '/_authenticated/administration/activity-logs'
+      path: '/administration/activity-logs'
+      fullPath: '/administration/activity-logs'
+      preLoaderRoute: typeof AuthenticatedAdministrationActivityLogsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/administration/permissions': {
+      id: '/_authenticated/administration/permissions'
+      path: '/administration/permissions'
+      fullPath: '/administration/permissions'
+      preLoaderRoute: typeof AuthenticatedAdministrationPermissionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/administration/roles': {
+      id: '/_authenticated/administration/roles'
+      path: '/administration/roles'
+      fullPath: '/administration/roles'
+      preLoaderRoute: typeof AuthenticatedAdministrationRolesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/administration/users': {
+      id: '/_authenticated/administration/users'
+      path: '/administration/users'
+      fullPath: '/administration/users'
+      preLoaderRoute: typeof AuthenticatedAdministrationUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/modules/$slug': {
       id: '/_authenticated/modules/$slug'
       path: '/modules/$slug'
@@ -191,6 +271,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSecurityRoute: typeof AuthenticatedSecurityRoute
+  AuthenticatedAdministrationActivityLogsRoute: typeof AuthenticatedAdministrationActivityLogsRoute
+  AuthenticatedAdministrationPermissionsRoute: typeof AuthenticatedAdministrationPermissionsRoute
+  AuthenticatedAdministrationRolesRoute: typeof AuthenticatedAdministrationRolesRoute
+  AuthenticatedAdministrationUsersRoute: typeof AuthenticatedAdministrationUsersRoute
   AuthenticatedModulesSlugRoute: typeof AuthenticatedModulesSlugRoute
 }
 
@@ -198,6 +282,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSecurityRoute: AuthenticatedSecurityRoute,
+  AuthenticatedAdministrationActivityLogsRoute:
+    AuthenticatedAdministrationActivityLogsRoute,
+  AuthenticatedAdministrationPermissionsRoute:
+    AuthenticatedAdministrationPermissionsRoute,
+  AuthenticatedAdministrationRolesRoute: AuthenticatedAdministrationRolesRoute,
+  AuthenticatedAdministrationUsersRoute: AuthenticatedAdministrationUsersRoute,
   AuthenticatedModulesSlugRoute: AuthenticatedModulesSlugRoute,
 }
 
