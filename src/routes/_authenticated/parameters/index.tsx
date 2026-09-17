@@ -44,7 +44,7 @@ function GeneralSettingsPage() {
 
   const editable = can("settings.manage");
 
-  async function save(key: string, value: unknown) {
+  async function save(key: string, value: string | boolean) {
     const { error } = await supabase.from("system_settings").update({ value }).eq("key", key);
     if (error) {
       toast.error(error.message);

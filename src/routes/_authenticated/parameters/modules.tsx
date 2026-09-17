@@ -93,7 +93,12 @@ function ModulesManagementPage() {
     qc.invalidateQueries({ queryKey: ["activity_logs"] });
   }
 
-  async function update(id: string, patch: Record<string, unknown>, action: string, label: string) {
+  async function update(
+    id: string,
+    patch: { enabled?: boolean; status?: string },
+    action: string,
+    label: string,
+  ) {
     const { error } = await supabase.from("modules").update(patch).eq("id", id);
     if (error) {
       toast.error(error.message);
