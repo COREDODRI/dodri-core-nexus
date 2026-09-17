@@ -72,7 +72,11 @@ function GeneralSettingsPage() {
                 disabled={!editable}
                 onChange={(e) => setDraft({ ...draft, [key]: e.target.value })}
               />
-              {editable && <Button variant="secondary" onClick={() => save(key, draft[key])}>Save</Button>}
+              {editable && (
+                <Button variant="secondary" onClick={() => save(key, draft[key] ?? "")}>
+                  Save
+                </Button>
+              )}
             </div>
           </div>
         ))}
