@@ -67,7 +67,11 @@ export function RegistryPanel({ modules }: { modules: ModuleRow[] }) {
         </div>
       </div>
 
-      <Button asChild className="mt-3 w-full bg-[var(--gradient-brand)] shadow-[var(--shadow-glow)]">
+      <Button
+        asChild
+        className="mt-3 w-full text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90"
+        style={{ background: "var(--gradient-brand)" }}
+      >
         <Link to="/parameters/modules">
           <Plus /> Add New Module
         </Link>
