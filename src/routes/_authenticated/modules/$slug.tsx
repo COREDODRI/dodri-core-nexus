@@ -50,7 +50,10 @@ function ModulePage() {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="panel flex items-center gap-3 p-5">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--gradient-brand)] text-white">
+          <span
+            className="flex h-11 w-11 items-center justify-center rounded-xl text-primary-foreground"
+            style={{ background: "var(--gradient-brand)" }}
+          >
             <Icon className="h-5 w-5" />
           </span>
           <div>

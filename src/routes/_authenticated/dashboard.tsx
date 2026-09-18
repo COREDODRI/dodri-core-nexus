@@ -89,10 +89,7 @@ function DashboardPage() {
         <QuickActions />
       </div>
 
-      <div className="grid gap-2.5 lg:grid-cols-[1fr_2fr]">
-        <CoreStatusPanel services={services} />
-        <div className="hidden lg:block" />
-      </div>
+      <CoreStatusPanel services={services} />
     </div>
   );
 }

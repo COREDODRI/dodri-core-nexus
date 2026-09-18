@@ -128,7 +128,10 @@ export function EnergyCore({ modules, connections = [] }: Props) {
               style={{ left: `${x}%`, top: `${y}%` }}
             >
               <div className="module-node flex w-[78px] flex-col items-center gap-1 px-1.5 py-1.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[var(--gradient-brand)] text-primary-foreground shadow-[var(--shadow-glow)]">
+                <div
+                  className="flex h-9 w-9 items-center justify-center rounded-md text-primary-foreground shadow-[var(--shadow-glow)]"
+                  style={{ background: "var(--gradient-brand)" }}
+                >
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="truncate text-xs font-semibold">{module.name}</div>
