@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   ChevronDown,
@@ -143,7 +143,15 @@ function TreeRow({
   );
 }
 
-export function ModuleWorkspace({ modules }: { modules: ModuleRow[] }) {
+export function ModuleWorkspace({
+  modules,
+  center,
+  aside,
+}: {
+  modules: ModuleRow[];
+  center?: ReactNode;
+  aside?: ReactNode;
+}) {
   const { can, user, profile } = useAuth();
   const queryClient = useQueryClient();
   const enabledModules = modules.filter((module) => module.enabled);
