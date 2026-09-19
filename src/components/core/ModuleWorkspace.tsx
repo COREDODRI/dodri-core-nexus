@@ -222,7 +222,11 @@ export function ModuleWorkspace({
         <div className="mt-2 border-t border-border/60 pt-2 font-mono text-[9px] text-muted-foreground">{flatFiles.length} files · {module.version}</div>
       </section>
 
-      <section className="panel flex min-h-[510px] min-w-0 flex-col overflow-hidden p-2">
+      {center}
+
+      <div className="flex min-h-[510px] min-w-0 flex-col gap-2.5">
+      {aside}
+      <section className="panel flex min-h-[300px] min-w-0 flex-1 flex-col overflow-hidden p-2">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-1 pb-2">
           <div className="min-w-0"><div className="section-title truncate">Editing: {selectedFile?.node.name ?? "No file"}{dirty && <span className="ml-1 text-warning">●</span>}</div><div className="mt-1 truncate font-mono text-[8px] text-muted-foreground">{selectedFile?.path}</div></div>
           <X className="h-3.5 w-3.5 text-muted-foreground" />
@@ -234,7 +238,7 @@ export function ModuleWorkspace({
           </div>
           <div className="grid min-h-0 flex-1 grid-cols-[38px_minmax(0,1fr)]">
             <div className="overflow-hidden border-r border-editor-line py-3 text-right font-mono text-[10px] leading-5 text-editor-muted">{Array.from({ length: lineCount }, (_, i) => <div key={i} className="pr-2">{i + 1}</div>)}</div>
-            <textarea aria-label="Module file editor" spellCheck={false} value={draft} onChange={(event) => setDraft(event.target.value)} className="min-h-[385px] w-full resize-none bg-transparent p-3 font-mono text-[11px] leading-5 text-editor-foreground outline-none" />
+            <textarea aria-label="Module file editor" spellCheck={false} value={draft} onChange={(event) => setDraft(event.target.value)} className="min-h-[180px] w-full resize-none bg-transparent p-3 font-mono text-[11px] leading-5 text-editor-foreground outline-none" />
           </div>
           <div className="flex min-h-9 items-center gap-3 border-t border-editor-line px-3 font-mono text-[9px] text-editor-muted">
             <span>Ln {lineCount}, Col 1</span><span>{selectedFile?.node.language ?? "Text"}</span><span>UTF-8</span>
@@ -242,6 +246,7 @@ export function ModuleWorkspace({
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }
