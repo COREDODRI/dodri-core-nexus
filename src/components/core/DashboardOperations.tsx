@@ -182,7 +182,7 @@ export function QuickActions() {
   return (
     <section className="panel p-3">
       <div className="section-title mb-3">Quick Actions</div>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-2">
         {actions.map((action) => (
           <Button key={action.label} variant="outline" asChild className="h-9 justify-start bg-card/70 px-2 text-[10px]">
             <Link to={action.to}>
