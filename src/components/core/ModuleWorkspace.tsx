@@ -188,11 +188,17 @@ export function ModuleWorkspace({ modules }: { modules: ModuleRow[] }) {
   }
 
   if (!module) {
-    return <section className="panel grid min-h-[510px] place-items-center p-6 text-center text-sm text-muted-foreground">Enable a module to open its workspace.</section>;
+    return (
+      <div className="grid gap-2.5 xl:grid-cols-[230px_minmax(420px,1fr)_330px]">
+        <section className="panel grid min-h-[200px] place-items-center p-6 text-center text-xs text-muted-foreground">Enable a module to open its workspace.</section>
+        {center}
+        <div className="flex min-w-0 flex-col gap-2.5">{aside}</div>
+      </div>
+    );
   }
 
   return (
-    <div className="contents">
+    <div className="grid gap-2.5 xl:grid-cols-[230px_minmax(420px,1fr)_330px]">
       <section className="panel flex min-h-[510px] min-w-0 flex-col overflow-hidden p-3">
         <div className="flex items-center justify-between border-b border-border/70 pb-2.5">
           <div className="section-title">Project Files</div>
