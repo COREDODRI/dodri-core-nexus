@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   ChevronDown,
@@ -81,7 +81,7 @@ function starterFiles(module: ModuleRow): ModuleFileNode[] {
 }
 
 function configuredFiles(module: ModuleRow): ModuleFileNode[] {
-  const value = module.configuration?.files;
+  const value = module.configuration?.["files"];
   return Array.isArray(value) ? (value as ModuleFileNode[]) : starterFiles(module);
 }
 
@@ -143,7 +143,15 @@ function TreeRow({
   );
 }
 
-export function ModuleWorkspace({ modules }: { modules: ModuleRow[] }) {
+export function ModuleWorkspace({
+  modules,
+  center,
+  aside,
+}: {
+  modules: ModuleRow[];
+  center?: ReactNode;
+  aside?: ReactNode;
+}) {
   const { can, user, profile } = useAuth();
   const queryClient = useQueryClient();
   const enabledModules = modules.filter((module) => module.enabled);
@@ -178,18 +186,27 @@ export function ModuleWorkspace({ modules }: { modules: ModuleRow[] }) {
     const nextFiles = updateFile(files, selectedFile.path, draft);
     const { error } = await supabase.from("modules").update({ configuration: { ...module.configuration, files: nextFiles } }).eq("id", module.id);
     setSaving(false);
-    if (error) return toast.error(error.message);
-    if (user) await logActivity({ userId: user.id, actor: profile?.email, action: "module.file.updated", entityType: "module", entityId: module.id, description: `${selectedFile.node.name} saved in ${module.name}` });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    if (user) await logActivity({ userId: user.id, actor: profile?.email ?? null, action: "module.file.updated", entityType: "module", entityId: module.id, description: `${selectedFile.node.name} saved in ${module.name}` });
     await Promise.all([queryClient.invalidateQueries({ queryKey: ["modules"] }), queryClient.invalidateQueries({ queryKey: ["activity_logs"] })]);
     toast.success(`${selectedFile.node.name} saved`);
   }
 
   if (!module) {
-    return <section className="panel grid min-h-[510px] place-items-center p-6 text-center text-sm text-muted-foreground">Enable a module to open its workspace.</section>;
+    return (
+      <div className="grid gap-2.5 xl:grid-cols-[230px_minmax(420px,1fr)_330px]">
+        <section className="panel grid min-h-[200px] place-items-center p-6 text-center text-xs text-muted-foreground">Enable a module to open its workspace.</section>
+        {center}
+        <div className="flex min-w-0 flex-col gap-2.5">{aside}</div>
+      </div>
+    );
   }
 
   return (
-    <div className="contents">
+    <div className="grid gap-2.5 xl:grid-cols-[230px_minmax(420px,1fr)_330px]">
       <section className="panel flex min-h-[510px] min-w-0 flex-col overflow-hidden p-3">
         <div className="flex items-center justify-between border-b border-border/70 pb-2.5">
           <div className="section-title">Project Files</div>
@@ -205,7 +222,11 @@ export function ModuleWorkspace({ modules }: { modules: ModuleRow[] }) {
         <div className="mt-2 border-t border-border/60 pt-2 font-mono text-[9px] text-muted-foreground">{flatFiles.length} files · {module.version}</div>
       </section>
 
-      <section className="panel flex min-h-[510px] min-w-0 flex-col overflow-hidden p-2">
+      {center}
+
+      <div className="flex min-h-[510px] min-w-0 flex-col gap-2.5">
+      {aside}
+      <section className="panel flex min-h-[300px] min-w-0 flex-1 flex-col overflow-hidden p-2">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-1 pb-2">
           <div className="min-w-0"><div className="section-title truncate">Editing: {selectedFile?.node.name ?? "No file"}{dirty && <span className="ml-1 text-warning">●</span>}</div><div className="mt-1 truncate font-mono text-[8px] text-muted-foreground">{selectedFile?.path}</div></div>
           <X className="h-3.5 w-3.5 text-muted-foreground" />
@@ -217,7 +238,7 @@ export function ModuleWorkspace({ modules }: { modules: ModuleRow[] }) {
           </div>
           <div className="grid min-h-0 flex-1 grid-cols-[38px_minmax(0,1fr)]">
             <div className="overflow-hidden border-r border-editor-line py-3 text-right font-mono text-[10px] leading-5 text-editor-muted">{Array.from({ length: lineCount }, (_, i) => <div key={i} className="pr-2">{i + 1}</div>)}</div>
-            <textarea aria-label="Module file editor" spellCheck={false} value={draft} onChange={(event) => setDraft(event.target.value)} className="min-h-[385px] w-full resize-none bg-transparent p-3 font-mono text-[11px] leading-5 text-editor-foreground outline-none" />
+            <textarea aria-label="Module file editor" spellCheck={false} value={draft} onChange={(event) => setDraft(event.target.value)} className="min-h-[180px] w-full resize-none bg-transparent p-3 font-mono text-[11px] leading-5 text-editor-foreground outline-none" />
           </div>
           <div className="flex min-h-9 items-center gap-3 border-t border-editor-line px-3 font-mono text-[9px] text-editor-muted">
             <span>Ln {lineCount}, Col 1</span><span>{selectedFile?.node.language ?? "Text"}</span><span>UTF-8</span>
@@ -225,6 +246,7 @@ export function ModuleWorkspace({ modules }: { modules: ModuleRow[] }) {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

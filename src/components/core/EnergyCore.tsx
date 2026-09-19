@@ -93,7 +93,7 @@ export function EnergyCore({ modules, connections = [] }: Props) {
         </svg>
 
         {/* Core sphere */}
-        <div className="absolute left-1/2 top-1/2 flex h-[42%] w-[42%] -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+        <div className="absolute left-1/2 top-1/2 flex aspect-square w-[42%] -translate-x-1/2 -translate-y-1/2 items-center justify-center">
           <div className="core-ring absolute inset-[-14%] rounded-full border border-primary/30" />
           <div className="core-ring-reverse absolute inset-[-28%] rounded-full border border-dashed border-cyan/25" />
           <div
