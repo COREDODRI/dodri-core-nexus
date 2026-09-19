@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Activity, Boxes, Cable, HeartPulse, Users } from "lucide-react";
 import { EnergyCore } from "@/components/core/EnergyCore";
+import { ModuleWorkspace } from "@/components/core/ModuleWorkspace";
+import { ConnectedModules } from "@/components/core/ConnectedModules";
 import { CoreStatusPanel, type ServiceStatus } from "@/components/core/CoreStatusPanel";
 import { MetricCards, type Metric } from "@/components/core/MetricCards";
 import { RecentActivity, type ActivityRow } from "@/components/core/RecentActivity";
@@ -73,20 +75,28 @@ function DashboardPage() {
     <div className="mx-auto max-w-[1700px] space-y-2.5">
       <MetricCards metrics={metrics} />
 
-      <div className="grid gap-2.5 xl:grid-cols-[210px_minmax(440px,1fr)_250px]">
-        <RegistryPanel modules={moduleRows} />
-        <EnergyCore modules={moduleRows} connections={connectionRows} />
-        <CoreTelemetry
-          modules={moduleRows}
-          connections={connectionRows}
-          activeUsers={userRows.filter((user) => user.status === "active").length}
-        />
-      </div>
+      <ModuleWorkspace
+        modules={moduleRows}
+        center={<EnergyCore modules={moduleRows} connections={connectionRows} />}
+        aside={
+          <CoreTelemetry
+            modules={moduleRows}
+            connections={connectionRows}
+            activeUsers={userRows.filter((user) => user.status === "active").length}
+          />
+        }
+      />
 
-      <div className="grid gap-2.5 xl:grid-cols-[1.1fr_0.9fr_1.1fr]">
-        <RecentActivity rows={(logs.data ?? []) as ActivityRow[]} dense />
-        <SystemResources modules={moduleRows} connections={connectionRows} />
-        <QuickActions />
+      <div className="grid gap-2.5 xl:grid-cols-[230px_minmax(420px,1fr)_330px]">
+        <RegistryPanel modules={moduleRows} />
+        <div className="grid min-w-0 gap-2.5 md:grid-cols-2">
+          <RecentActivity rows={(logs.data ?? []) as ActivityRow[]} dense />
+          <SystemResources modules={moduleRows} connections={connectionRows} />
+        </div>
+        <div className="grid min-w-0 gap-2.5">
+          <QuickActions />
+          <ConnectedModules modules={moduleRows} connections={connectionRows} />
+        </div>
       </div>
 
       <CoreStatusPanel services={services} />
