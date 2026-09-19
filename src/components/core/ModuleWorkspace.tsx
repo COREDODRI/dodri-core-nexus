@@ -81,7 +81,7 @@ function starterFiles(module: ModuleRow): ModuleFileNode[] {
 }
 
 function configuredFiles(module: ModuleRow): ModuleFileNode[] {
-  const value = module.configuration?.files;
+  const value = module.configuration?.["files"];
   return Array.isArray(value) ? (value as ModuleFileNode[]) : starterFiles(module);
 }
 
@@ -178,8 +178,11 @@ export function ModuleWorkspace({ modules }: { modules: ModuleRow[] }) {
     const nextFiles = updateFile(files, selectedFile.path, draft);
     const { error } = await supabase.from("modules").update({ configuration: { ...module.configuration, files: nextFiles } }).eq("id", module.id);
     setSaving(false);
-    if (error) return toast.error(error.message);
-    if (user) await logActivity({ userId: user.id, actor: profile?.email, action: "module.file.updated", entityType: "module", entityId: module.id, description: `${selectedFile.node.name} saved in ${module.name}` });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    if (user) await logActivity({ userId: user.id, actor: profile?.email ?? null, action: "module.file.updated", entityType: "module", entityId: module.id, description: `${selectedFile.node.name} saved in ${module.name}` });
     await Promise.all([queryClient.invalidateQueries({ queryKey: ["modules"] }), queryClient.invalidateQueries({ queryKey: ["activity_logs"] })]);
     toast.success(`${selectedFile.node.name} saved`);
   }

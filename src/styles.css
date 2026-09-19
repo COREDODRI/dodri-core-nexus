@@ -39,6 +39,11 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-cyan: var(--cyan);
   --color-violet: var(--violet);
+  --color-editor: var(--editor);
+  --color-editor-foreground: var(--editor-foreground);
+  --color-editor-muted: var(--editor-muted);
+  --color-editor-line: var(--editor-line);
+  --color-editor-active: var(--editor-active);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
@@ -132,6 +137,12 @@
 
   --cyan: oklch(0.73 0.135 213);
   --violet: oklch(0.6 0.2 295);
+
+  --editor: oklch(0.26 0.04 262);
+  --editor-foreground: oklch(0.93 0.02 235);
+  --editor-muted: oklch(0.66 0.03 245);
+  --editor-line: oklch(0.34 0.045 262);
+  --editor-active: oklch(0.31 0.05 262);
 
   --destructive: oklch(0.6 0.22 22);
   --destructive-foreground: oklch(0.99 0.005 240);
@@ -361,6 +372,42 @@
   background-image: linear-gradient(color-mix(in oklab, var(--primary) 6%, transparent) 1px, transparent 1px),
     linear-gradient(90deg, color-mix(in oklab, var(--primary) 6%, transparent) 1px, transparent 1px);
   background-size: 18px 18px;
+}
+
+@utility code-editor {
+  background: var(--editor);
+  border: 1px solid color-mix(in oklab, var(--editor-line) 85%, transparent);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.05);
+}
+
+@utility file-tree-row {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: var(--radius-sm);
+  padding-block: 0.25rem;
+  padding-right: 0.5rem;
+  text-align: left;
+  font-size: 0.6875rem;
+  color: var(--foreground);
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  & svg {
+    width: 0.8rem;
+    height: 0.8rem;
+    flex: none;
+  }
+
+  &:hover {
+    background: color-mix(in oklab, var(--primary) 8%, transparent);
+  }
+
+  &.is-selected {
+    background: color-mix(in oklab, var(--primary) 14%, transparent);
+    color: var(--primary);
+    font-weight: 600;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
