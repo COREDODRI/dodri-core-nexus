@@ -3,6 +3,7 @@ import { Activity, Boxes, Cable, HeartPulse, Users } from "lucide-react";
 import { EnergyCore } from "@/components/core/EnergyCore";
 import { ModuleWorkspace } from "@/components/core/ModuleWorkspace";
 import { ConnectedModules } from "@/components/core/ConnectedModules";
+import { ModuleHost } from "@/components/core/ModuleHost";
 import { CoreStatusPanel, type ServiceStatus } from "@/components/core/CoreStatusPanel";
 import { MetricCards, type Metric } from "@/components/core/MetricCards";
 import { RecentActivity, type ActivityRow } from "@/components/core/RecentActivity";
@@ -15,6 +16,10 @@ import {
 import { useActivityLogs, useConnections, useModules, useUsers } from "@/hooks/useCore";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
+  validateSearch: (search: Record<string, unknown>): { module?: string } => {
+    const value = search["module"];
+    return typeof value === "string" && value ? { module: value } : {};
+  },
   head: () => ({
     meta: [
       { title: "Dashboard — DODRI Platform Core" },
@@ -29,6 +34,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 });
 
 function DashboardPage() {
+  const { module: openSlug } = Route.useSearch();
   const modules = useModules();
   const connections = useConnections();
   const users = useUsers();
@@ -37,6 +43,7 @@ function DashboardPage() {
   const moduleRows = modules.data ?? [];
   const connectionRows = connections.data ?? [];
   const userRows = users.data ?? [];
+  const openModule = openSlug ? moduleRows.find((m) => m.slug === openSlug && m.enabled) : undefined;
 
   const activeModules = moduleRows.filter((m) => m.enabled && m.status === "active").length;
   const activeConnections = connectionRows.filter((c) => c.status === "active").length;
@@ -75,17 +82,21 @@ function DashboardPage() {
     <div className="mx-auto max-w-[1700px] space-y-2.5">
       <MetricCards metrics={metrics} />
 
-      <ModuleWorkspace
-        modules={moduleRows}
-        center={<EnergyCore modules={moduleRows} connections={connectionRows} />}
-        aside={
-          <CoreTelemetry
-            modules={moduleRows}
-            connections={connectionRows}
-            activeUsers={userRows.filter((user) => user.status === "active").length}
-          />
-        }
-      />
+      {openModule ? (
+        <ModuleHost module={openModule} />
+      ) : (
+        <ModuleWorkspace
+          modules={moduleRows}
+          center={<EnergyCore modules={moduleRows} connections={connectionRows} />}
+          aside={
+            <CoreTelemetry
+              modules={moduleRows}
+              connections={connectionRows}
+              activeUsers={userRows.filter((user) => user.status === "active").length}
+            />
+          }
+        />
+      )}
 
       <div className="grid gap-2.5 xl:grid-cols-[230px_minmax(420px,1fr)_330px]">
         <RegistryPanel modules={moduleRows} />

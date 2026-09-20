@@ -34,6 +34,9 @@ export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const openModule = useRouterState({
+    select: (s) => (s.location.search as { module?: string })?.module,
+  });
   const { data: modules } = useModules();
   const activeModules = (modules ?? []).filter((m) => m.enabled);
 
@@ -118,11 +121,14 @@ export function AppSidebar() {
               )}
               {activeModules.map((module) => {
                 const Icon = moduleIcon(module.icon);
-                const path = `/modules/${module.slug}`;
                 return (
                   <SidebarMenuItem key={module.id}>
-                    <SidebarMenuButton asChild isActive={isActive(path)} tooltip={module.name}>
-                      <Link to="/modules/$slug" params={{ slug: module.slug }}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname === "/dashboard" && openModule === module.slug}
+                      tooltip={module.name}
+                    >
+                      <Link to="/dashboard" search={{ module: module.slug }}>
                         <Icon />
                         <span>{module.name}</span>
                       </Link>
