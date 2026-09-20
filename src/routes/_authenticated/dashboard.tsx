@@ -34,6 +34,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 });
 
 function DashboardPage() {
+  const { module: openSlug } = Route.useSearch();
   const modules = useModules();
   const connections = useConnections();
   const users = useUsers();
