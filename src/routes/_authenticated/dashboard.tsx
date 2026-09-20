@@ -43,6 +43,7 @@ function DashboardPage() {
   const moduleRows = modules.data ?? [];
   const connectionRows = connections.data ?? [];
   const userRows = users.data ?? [];
+  const openModule = openSlug ? moduleRows.find((m) => m.slug === openSlug && m.enabled) : undefined;
 
   const activeModules = moduleRows.filter((m) => m.enabled && m.status === "active").length;
   const activeConnections = connectionRows.filter((c) => c.status === "active").length;
@@ -81,17 +82,21 @@ function DashboardPage() {
     <div className="mx-auto max-w-[1700px] space-y-2.5">
       <MetricCards metrics={metrics} />
 
-      <ModuleWorkspace
-        modules={moduleRows}
-        center={<EnergyCore modules={moduleRows} connections={connectionRows} />}
-        aside={
-          <CoreTelemetry
-            modules={moduleRows}
-            connections={connectionRows}
-            activeUsers={userRows.filter((user) => user.status === "active").length}
-          />
-        }
-      />
+      {openModule ? (
+        <ModuleHost module={openModule} />
+      ) : (
+        <ModuleWorkspace
+          modules={moduleRows}
+          center={<EnergyCore modules={moduleRows} connections={connectionRows} />}
+          aside={
+            <CoreTelemetry
+              modules={moduleRows}
+              connections={connectionRows}
+              activeUsers={userRows.filter((user) => user.status === "active").length}
+            />
+          }
+        />
+      )}
 
       <div className="grid gap-2.5 xl:grid-cols-[230px_minmax(420px,1fr)_330px]">
         <RegistryPanel modules={moduleRows} />
