@@ -16,9 +16,10 @@ import {
 import { useActivityLogs, useConnections, useModules, useUsers } from "@/hooks/useCore";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    module: typeof search["module"] === "string" ? (search["module"] as string) : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { module?: string } => {
+    const value = search["module"];
+    return typeof value === "string" && value ? { module: value } : {};
+  },
   head: () => ({
     meta: [
       { title: "Dashboard — DODRI Platform Core" },
