@@ -3,6 +3,7 @@ import { Activity, Boxes, Cable, HeartPulse, Users } from "lucide-react";
 import { EnergyCore } from "@/components/core/EnergyCore";
 import { ModuleWorkspace } from "@/components/core/ModuleWorkspace";
 import { ConnectedModules } from "@/components/core/ConnectedModules";
+import { ModuleHost } from "@/components/core/ModuleHost";
 import { CoreStatusPanel, type ServiceStatus } from "@/components/core/CoreStatusPanel";
 import { MetricCards, type Metric } from "@/components/core/MetricCards";
 import { RecentActivity, type ActivityRow } from "@/components/core/RecentActivity";
@@ -15,6 +16,9 @@ import {
 import { useActivityLogs, useConnections, useModules, useUsers } from "@/hooks/useCore";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    module: typeof search["module"] === "string" ? (search["module"] as string) : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Dashboard — DODRI Platform Core" },
