@@ -81,7 +81,7 @@ function CompanyPage() {
       actor: profile?.email ?? null,
       action,
       entityType: "company",
-      entityId: company.data?.id,
+      ...(company.data?.id ? { entityId: company.data.id } : {}),
       description,
     });
     qc.invalidateQueries({ queryKey: ["activity_logs"] });
@@ -93,12 +93,12 @@ function CompanyPage() {
     if (company.data) {
       const { error } = await supabase.from("company").update({ name: name.trim() }).eq("id", company.data.id);
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       await log("company.updated", `Company renamed to ${name.trim()}`);
     } else {
       const { error } = await supabase.from("company").insert({ name: name.trim() });
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       await log("company.created", `Company ${name.trim()} registered in this Core`);
     }
     toast.success("Company saved.");
@@ -107,18 +107,18 @@ function CompanyPage() {
   }
 
   async function uploadLogo(file: File) {
-    if (!company.data) return toast.error("Save the company name first.");
+    if (!company.data) { toast.error("Save the company name first."); return; }
     setBusy(true);
     const ext = file.name.split(".").pop() || "png";
     const path = `${company.data.id}/logo-${Date.now()}.${ext}`;
     const { error: upErr } = await supabase.storage.from(LOGO_BUCKET).upload(path, file, { upsert: true });
     if (upErr) {
       setBusy(false);
-      return toast.error(upErr.message);
+      { toast.error(upErr.message); return; }
     }
     const { error } = await supabase.from("company").update({ logo_url: path }).eq("id", company.data.id);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await log("company.logo.updated", "Company logo updated");
     toast.success("Logo updated.");
     qc.invalidateQueries({ queryKey: ["company"] });
@@ -133,14 +133,14 @@ function CompanyPage() {
         .update({ plan, start_date: start })
         .eq("id", subscription.data.id);
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       await log("subscription.updated", `Subscription set to ${plan} starting ${start}`);
     } else {
       const { error } = await supabase
         .from("subscriptions")
         .insert({ company_id: company.data.id, plan, start_date: start, end_date: planEndDate(start, plan) });
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       await log("subscription.created", `Subscription ${plan} created`);
     }
     toast.success("Subscription saved.");
@@ -151,7 +151,7 @@ function CompanyPage() {
   async function setStatus(next: SubscriptionStatus) {
     if (!subscription.data) return;
     const { error } = await supabase.from("subscriptions").update({ status: next }).eq("id", subscription.data.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await log("subscription.status", `Subscription status changed to ${next}`);
     qc.invalidateQueries({ queryKey: ["subscription"] });
     qc.invalidateQueries({ queryKey: ["subscription_events"] });
@@ -164,7 +164,7 @@ function CompanyPage() {
       .from("subscriptions")
       .update({ start_date: nextStart, status: "ACTIVE" })
       .eq("id", subscription.data.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await log("subscription.renewed", `Subscription renewed from ${nextStart}`);
     toast.success("Subscription renewed.");
     qc.invalidateQueries({ queryKey: ["subscription"] });

@@ -24,6 +24,7 @@ import { Route as AuthenticatedAdministrationUsersRouteImport } from './routes/_
 import { Route as AuthenticatedModulesSlugRouteImport } from './routes/_authenticated/modules/$slug'
 import { Route as AuthenticatedParametersIndexRouteImport } from './routes/_authenticated/parameters/index'
 import { Route as AuthenticatedParametersApiRouteImport } from './routes/_authenticated/parameters/api'
+import { Route as AuthenticatedParametersCompanyRouteImport } from './routes/_authenticated/parameters/company'
 import { Route as AuthenticatedParametersConnectionsRouteImport } from './routes/_authenticated/parameters/connections'
 import { Route as AuthenticatedParametersModulesRouteImport } from './routes/_authenticated/parameters/modules'
 import { Route as AuthenticatedParametersSystemRouteImport } from './routes/_authenticated/parameters/system'
@@ -109,6 +110,12 @@ const AuthenticatedParametersApiRoute =
     path: '/parameters/api',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedParametersCompanyRoute =
+  AuthenticatedParametersCompanyRouteImport.update({
+    id: '/parameters/company',
+    path: '/parameters/company',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedParametersConnectionsRoute =
   AuthenticatedParametersConnectionsRouteImport.update({
     id: '/parameters/connections',
@@ -142,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/administration/users': typeof AuthenticatedAdministrationUsersRoute
   '/modules/$slug': typeof AuthenticatedModulesSlugRoute
   '/parameters/api': typeof AuthenticatedParametersApiRoute
+  '/parameters/company': typeof AuthenticatedParametersCompanyRoute
   '/parameters/connections': typeof AuthenticatedParametersConnectionsRoute
   '/parameters/modules': typeof AuthenticatedParametersModulesRoute
   '/parameters/system': typeof AuthenticatedParametersSystemRoute
@@ -161,6 +169,7 @@ export interface FileRoutesByTo {
   '/administration/users': typeof AuthenticatedAdministrationUsersRoute
   '/modules/$slug': typeof AuthenticatedModulesSlugRoute
   '/parameters/api': typeof AuthenticatedParametersApiRoute
+  '/parameters/company': typeof AuthenticatedParametersCompanyRoute
   '/parameters/connections': typeof AuthenticatedParametersConnectionsRoute
   '/parameters/modules': typeof AuthenticatedParametersModulesRoute
   '/parameters/system': typeof AuthenticatedParametersSystemRoute
@@ -182,6 +191,7 @@ export interface FileRoutesById {
   '/_authenticated/administration/users': typeof AuthenticatedAdministrationUsersRoute
   '/_authenticated/modules/$slug': typeof AuthenticatedModulesSlugRoute
   '/_authenticated/parameters/api': typeof AuthenticatedParametersApiRoute
+  '/_authenticated/parameters/company': typeof AuthenticatedParametersCompanyRoute
   '/_authenticated/parameters/connections': typeof AuthenticatedParametersConnectionsRoute
   '/_authenticated/parameters/modules': typeof AuthenticatedParametersModulesRoute
   '/_authenticated/parameters/system': typeof AuthenticatedParametersSystemRoute
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/administration/users'
     | '/modules/$slug'
     | '/parameters/api'
+    | '/parameters/company'
     | '/parameters/connections'
     | '/parameters/modules'
     | '/parameters/system'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/administration/users'
     | '/modules/$slug'
     | '/parameters/api'
+    | '/parameters/company'
     | '/parameters/connections'
     | '/parameters/modules'
     | '/parameters/system'
@@ -242,6 +254,7 @@ export interface FileRouteTypes {
     | '/_authenticated/administration/users'
     | '/_authenticated/modules/$slug'
     | '/_authenticated/parameters/api'
+    | '/_authenticated/parameters/company'
     | '/_authenticated/parameters/connections'
     | '/_authenticated/parameters/modules'
     | '/_authenticated/parameters/system'
@@ -363,6 +376,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParametersApiRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/parameters/company': {
+      id: '/_authenticated/parameters/company'
+      path: '/parameters/company'
+      fullPath: '/parameters/company'
+      preLoaderRoute: typeof AuthenticatedParametersCompanyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/parameters/connections': {
       id: '/_authenticated/parameters/connections'
       path: '/parameters/connections'
@@ -397,6 +417,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdministrationUsersRoute: typeof AuthenticatedAdministrationUsersRoute
   AuthenticatedModulesSlugRoute: typeof AuthenticatedModulesSlugRoute
   AuthenticatedParametersApiRoute: typeof AuthenticatedParametersApiRoute
+  AuthenticatedParametersCompanyRoute: typeof AuthenticatedParametersCompanyRoute
   AuthenticatedParametersConnectionsRoute: typeof AuthenticatedParametersConnectionsRoute
   AuthenticatedParametersModulesRoute: typeof AuthenticatedParametersModulesRoute
   AuthenticatedParametersSystemRoute: typeof AuthenticatedParametersSystemRoute
@@ -415,6 +436,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdministrationUsersRoute: AuthenticatedAdministrationUsersRoute,
   AuthenticatedModulesSlugRoute: AuthenticatedModulesSlugRoute,
   AuthenticatedParametersApiRoute: AuthenticatedParametersApiRoute,
+  AuthenticatedParametersCompanyRoute: AuthenticatedParametersCompanyRoute,
   AuthenticatedParametersConnectionsRoute:
     AuthenticatedParametersConnectionsRoute,
   AuthenticatedParametersModulesRoute: AuthenticatedParametersModulesRoute,
