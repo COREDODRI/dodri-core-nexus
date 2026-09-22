@@ -125,7 +125,7 @@ function UsersPage() {
       <PageHeader
         eyebrow="Administration"
         title="Users"
-        description="Accounts are created through the secure auth system — passwords are never set manually."
+        description={`All accounts belong to ${company.data?.name ?? "this Core installation"}. Passwords are never set manually.`}
         actions={
           can("users.create") ? (
             <Dialog open={open} onOpenChange={setOpen}>
@@ -206,6 +206,7 @@ function UsersPage() {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
+              <TableHead>Company</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Last login</TableHead>
