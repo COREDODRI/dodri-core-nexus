@@ -1,4 +1,6 @@
-import { FileText, LayoutTemplate, Image } from "lucide-react";
+import { ExternalLink, FileText, LayoutTemplate, Image } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import type { ModuleUIProps } from "@/modules/registry";
 
 /**
@@ -20,6 +22,11 @@ export default function CmsModuleUI({ name, version }: ModuleUIProps) {
         <p className="mt-1 text-xs text-muted-foreground">
           Rendered inside the Core by <code className="font-mono">src/modules/cms/index.tsx</code> · v{version}
         </p>
+        <Button asChild size="sm" className="mt-2">
+          <Link to="/cms">
+            <ExternalLink className="mr-2 h-4 w-4" /> Open Front-office
+          </Link>
+        </Button>
       </div>
       <div className="grid gap-2.5 sm:grid-cols-3">
         {cards.map((card) => (

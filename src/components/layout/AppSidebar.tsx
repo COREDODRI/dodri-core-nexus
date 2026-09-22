@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Activity,
+  Building2,
   Cable,
   Cog,
   Gauge,
@@ -160,6 +161,18 @@ export function AppSidebar() {
                   <Link to="/parameters">
                     <SlidersHorizontal />
                     <span>General Settings</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive("/parameters/company")}
+                  tooltip="Company & Subscription"
+                >
+                  <Link to="/parameters/company">
+                    <Building2 />
+                    <span>Company &amp; Subscription</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
