@@ -221,6 +221,7 @@ function UsersPage() {
                   {[u.first_name, u.last_name].filter(Boolean).join(" ") || "—"}
                 </TableCell>
                 <TableCell className="text-muted-foreground">{u.email}</TableCell>
+                <TableCell className="text-muted-foreground">{company.data?.name ?? "—"}</TableCell>
                 <TableCell>
                   {canEdit ? (
                     <Select value={u.role_id ?? ""} onValueChange={(v) => setRole(u.id, v)}>
@@ -264,7 +265,7 @@ function UsersPage() {
             ))}
             {rows.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="py-8 text-center text-sm text-muted-foreground">
+                <TableCell colSpan={8} className="py-8 text-center text-sm text-muted-foreground">
                   No accounts visible with your permissions.
                 </TableCell>
               </TableRow>
