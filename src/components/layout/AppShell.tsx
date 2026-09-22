@@ -3,6 +3,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
 import { SubscriptionBanner } from "./SubscriptionBanner";
+import { AccessGate } from "./AccessGate";
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
