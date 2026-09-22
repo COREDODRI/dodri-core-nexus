@@ -22,6 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useRoles, useUsers, logActivity } from "@/hooks/useCore";
 import { useAuth } from "@/hooks/useAuth";
+import { useCompany } from "@/hooks/useCompany";
 
 export const Route = createFileRoute("/_authenticated/administration/users")({
   head: () => ({
@@ -38,6 +39,7 @@ export const Route = createFileRoute("/_authenticated/administration/users")({
 function UsersPage() {
   const { can, user, profile } = useAuth();
   const users = useUsers();
+  const company = useCompany();
   const roles = useRoles();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
