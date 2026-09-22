@@ -22,6 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useRoles, useUsers, logActivity } from "@/hooks/useCore";
 import { useAuth } from "@/hooks/useAuth";
+import { useCompany } from "@/hooks/useCompany";
 
 export const Route = createFileRoute("/_authenticated/administration/users")({
   head: () => ({
@@ -38,6 +39,7 @@ export const Route = createFileRoute("/_authenticated/administration/users")({
 function UsersPage() {
   const { can, user, profile } = useAuth();
   const users = useUsers();
+  const company = useCompany();
   const roles = useRoles();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -123,7 +125,7 @@ function UsersPage() {
       <PageHeader
         eyebrow="Administration"
         title="Users"
-        description="Accounts are created through the secure auth system — passwords are never set manually."
+        description={`All accounts belong to ${company.data?.name ?? "this Core installation"}. Passwords are never set manually.`}
         actions={
           can("users.create") ? (
             <Dialog open={open} onOpenChange={setOpen}>
@@ -204,6 +206,7 @@ function UsersPage() {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
+              <TableHead>Company</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Last login</TableHead>
@@ -218,6 +221,7 @@ function UsersPage() {
                   {[u.first_name, u.last_name].filter(Boolean).join(" ") || "—"}
                 </TableCell>
                 <TableCell className="text-muted-foreground">{u.email}</TableCell>
+                <TableCell className="text-muted-foreground">{company.data?.name ?? "—"}</TableCell>
                 <TableCell>
                   {canEdit ? (
                     <Select value={u.role_id ?? ""} onValueChange={(v) => setRole(u.id, v)}>
@@ -261,7 +265,7 @@ function UsersPage() {
             ))}
             {rows.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="py-8 text-center text-sm text-muted-foreground">
+                <TableCell colSpan={8} className="py-8 text-center text-sm text-muted-foreground">
                   No accounts visible with your permissions.
                 </TableCell>
               </TableRow>
