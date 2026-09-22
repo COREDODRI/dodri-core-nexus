@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
+import { SubscriptionBanner } from "./SubscriptionBanner";
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
