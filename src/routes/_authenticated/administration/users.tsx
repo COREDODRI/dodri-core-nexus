@@ -111,6 +111,31 @@ function UsersPage() {
     qc.invalidateQueries({ queryKey: ["users"] });
   }
 
+  async function linkToCompany(id: string) {
+    const companyId = company.data?.id;
+    if (!companyId) {
+      toast.error("Create the company first in Parameters → Company & Subscription.");
+      return;
+    }
+    const { error } = await supabase.from("profiles").update({ company_id: companyId }).eq("id", id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    if (user) {
+      await logActivity({
+        userId: user.id,
+        actor: profile?.email ?? null,
+        action: "user.updated",
+        entityType: "user",
+        entityId: id,
+        description: `Linked to ${company.data?.name ?? "company"}`,
+      });
+    }
+    toast.success("Account linked to the company.");
+    qc.invalidateQueries({ queryKey: ["users"] });
+  }
+
   async function sendReset(email: string | null) {
     if (!email) return;
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
